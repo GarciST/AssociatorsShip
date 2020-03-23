@@ -11,22 +11,28 @@ import robocode.util.Utils;
 public class FirstShip extends Ship{
 	
 	private boolean direction = true;
+	private int cannonPower = 2;
 	
 	public void run(){ 
 		setTurnRadarRightDegrees(Double.POSITIVE_INFINITY);
-		
-		//while(true) {
-			
-		//}
     }
 	
 	public void onHitWall(HitWallEvent event){
 		direction = !direction;
-		setTurnRightDegrees(45);
+		if (direction) {
+			setAhead(150);
+			setTurnRightDegrees(45);
+		}else {
+			setBack(150);
+			setTurnLeftDegrees(45);
+		}
+			
 	}
 
 	public void onHitRobot(HitRobotEvent event){
 		//Fill in something you'd like your Ship to do when it hits another Ship
+		cannonPower = 6;
+		
 	}
  
     public void onScannedShip(ScannedShipEvent event){
@@ -43,13 +49,15 @@ public class FirstShip extends Ship{
 		}
 		
 		if(!getFrontCannonAtBlindSpot()){
-			fireFrontCannon(2);
+			fireFrontCannon(cannonPower);
 			setAhead(150);
+			direction = true;
 		}
 		
 		if(!getBackCannonAtBlindSpot()){
-			fireBackCannon(2);
+			fireBackCannon(cannonPower);
 			setBack(150);
+			direction = false;
 		}
     }
     
